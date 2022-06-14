@@ -1,4 +1,4 @@
-# find_house_app
+# Find House App
 
 Aplikasi pencari kos-kosan.
 
