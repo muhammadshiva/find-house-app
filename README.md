@@ -1,12 +1,10 @@
 # find_house_app
 
-A new Flutter project.
+Aplikasi pencari kos-kosan.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
+Membangun aplikasi yang membantu masyarakat dalam mencari kos-kosan. Aplikasi ini juga terintegrasi dengan API untuk menyimpan data-data penting seperti info kos, dan lainnya.
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
