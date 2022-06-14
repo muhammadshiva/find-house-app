@@ -5,9 +5,9 @@ class City {
   bool isPopular;
 
   City({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
+    this.id,
+    this.name,
+    this.imageUrl,
     this.isPopular = false,
   });
 }

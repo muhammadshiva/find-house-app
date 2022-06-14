@@ -6,8 +6,11 @@ class FacilityItem extends StatelessWidget {
   final String imageUrl;
   final int total;
 
-  FacilityItem(
-      {required this.imageUrl, required this.name, required this.total});
+  FacilityItem({
+    this.imageUrl,
+    this.name,
+    this.total,
+  });
 
   @override
   Widget build(BuildContext context) {

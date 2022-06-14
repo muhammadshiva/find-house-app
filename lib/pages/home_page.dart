@@ -1,16 +1,20 @@
 import 'package:find_house_app/models/city.dart';
 import 'package:find_house_app/models/space.dart';
 import 'package:find_house_app/models/tips.dart';
+import 'package:find_house_app/providers/space_provider.dart';
 import 'package:find_house_app/theme.dart';
 import 'package:find_house_app/widgets/bottom_navbar_item.dart';
 import 'package:find_house_app/widgets/city_card.dart';
 import 'package:find_house_app/widgets/space_card.dart';
 import 'package:find_house_app/widgets/tips_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var spaceProvider = Provider.of<SpaceProvider>(context);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -22,9 +26,7 @@ class HomePage extends StatelessWidget {
             ),
             // NOTE: TITLE/HEADER
             Padding(
-              padding: EdgeInsets.only(
-                left: edge,
-              ),
+              padding: EdgeInsets.only(left: edge),
               child: Text(
                 'Explore Now',
                 style: blackTextStyle.copyWith(
@@ -36,9 +38,7 @@ class HomePage extends StatelessWidget {
               height: 2,
             ),
             Padding(
-              padding: EdgeInsets.only(
-                left: edge,
-              ),
+              padding: EdgeInsets.only(left: edge),
               child: Text(
                 'Mencari kosan yang cozy',
                 style: greyTextStyle.copyWith(
@@ -51,9 +51,7 @@ class HomePage extends StatelessWidget {
             ),
             // NOTE: POPULAR CITIES
             Padding(
-              padding: EdgeInsets.only(
-                left: edge,
-              ),
+              padding: EdgeInsets.only(left: edge),
               child: Text(
                 'Popular Cities',
                 style: regularTextStyle.copyWith(
@@ -96,8 +94,39 @@ class HomePage extends StatelessWidget {
                   CityCard(
                     City(
                       id: 3,
-                      name: 'Malang',
+                      name: 'Surabaya',
                       imageUrl: 'assets/city3.png',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 4,
+                      name: 'Palembang',
+                      imageUrl: 'assets/city4.png',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 5,
+                      name: 'Aceh',
+                      imageUrl: 'assets/city5.png',
+                      isPopular: true,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  CityCard(
+                    City(
+                      id: 6,
+                      name: 'Bogor',
+                      imageUrl: 'assets/city6.png',
                     ),
                   ),
                   SizedBox(
@@ -111,9 +140,7 @@ class HomePage extends StatelessWidget {
             ),
             // NOTE: RECOMMENDED SPACE
             Padding(
-              padding: EdgeInsets.only(
-                left: edge,
-              ),
+              padding: EdgeInsets.only(left: edge),
               child: Text(
                 'Recommended Space',
                 style: regularTextStyle.copyWith(
@@ -128,58 +155,38 @@ class HomePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 horizontal: edge,
               ),
-              child: Column(
-                children: [
-                  SpaceCard(
-                    Space(
-                        id: 1,
-                        name: 'Kurekateso Hott',
-                        imageUrl: 'assets/space1.png',
-                        price: 52,
-                        city: 'Bandung',
-                        country: 'Antapani',
-                        rating: 4),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  SpaceCard(
-                    Space(
-                        id: 2,
-                        name: 'Roemah Nenek',
-                        imageUrl: 'assets/space2.png',
-                        price: 11,
-                        city: 'Malang',
-                        country: 'Blimbing',
-                        rating: 4),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  SpaceCard(
-                    Space(
-                        id: 2,
-                        name: 'Darring How',
-                        imageUrl: 'assets/space3.png',
-                        price: 20,
-                        city: 'Surabaya',
-                        country: 'Gubeng',
-                        rating: 4),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                ],
+              child: FutureBuilder(
+                future: spaceProvider.getRecommendedSpaces(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Space> data = snapshot.data;
+                    int index = 0;
+                    return Column(
+                      children: data.map((item) {
+                        index++;
+                        return Container(
+                          margin: EdgeInsets.only(
+                            top: index == 1 ? 0 : 30,
+                          ),
+                          child: SpaceCard(item),
+                        );
+                      }).toList(),
+                    );
+                  }
+
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
             ),
+
             SizedBox(
               height: 30,
             ),
             // NOTE: TIPS & GUIDANCE
             Padding(
-              padding: EdgeInsets.only(
-                left: edge,
-              ),
+              padding: EdgeInsets.only(left: edge),
               child: Text(
                 'Tips & Guidance',
                 style: regularTextStyle.copyWith(
@@ -198,26 +205,28 @@ class HomePage extends StatelessWidget {
                 children: [
                   TipsCard(
                     Tips(
-                        id: 1,
-                        title: 'City Guideline',
-                        imageUrl: 'assets/tips1.png',
-                        updatedAt: '20 Apr'),
+                      id: 1,
+                      title: 'City Guidelines',
+                      imageUrl: 'assets/tips1.png',
+                      updatedAt: '20 Apr',
+                    ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   TipsCard(
                     Tips(
-                        id: 2,
-                        title: 'Jakarta Fairship',
-                        imageUrl: 'assets/tips2.png',
-                        updatedAt: '11 Dec'),
+                      id: 2,
+                      title: 'Jakarta Fairship',
+                      imageUrl: 'assets/tips2.png',
+                      updatedAt: '11 Dec',
+                    ),
                   ),
                 ],
               ),
             ),
             SizedBox(
-              height: 70 + edge,
+              height: 100 + edge,
             ),
           ],
         ),
